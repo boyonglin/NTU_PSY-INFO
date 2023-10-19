@@ -1,0 +1,4 @@
+[GDevelop & GoDot]
+1. Find demo games
+2. Export to HTML
+3. Switch to the folder & "python -m http.server"

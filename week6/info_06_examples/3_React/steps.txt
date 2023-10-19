@@ -1,0 +1,12 @@
+0. Install Node.js (which includes npm) from https://nodejs.org/en
+
+1. Install the most popular React extension in VSC and learn more from:
+   https://marketplace.visualstudio.com/items?itemName=xabikos.ReactSnippets
+
+2. 'Control+J' in VSC to open a terminal
+3. "npm install -g create-react-app" in VSC/terminal
+4. "create-react-app test" to create a React folder/project titled "test"
+5. "npm start" in VSC/terminal to see the App
+6. Play around with the App.js component
+7. Use "Open Folder" in VSC to open the rmet folder to learn how React does state-triggered re-rending
+

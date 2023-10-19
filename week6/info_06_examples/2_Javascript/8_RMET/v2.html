@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RMET</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+      #title {
+        text-align: center;
+      }
+      .final {
+        display: none;
+      }
+      .msg {
+        display: none;
+      }
+      .page {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+      button {
+        margin-top: 1.5em;
+        padding: 0.5em 1.5em;
+      }
+      label {
+        padding: 1em 0;
+        margin-right: 0.75em;
+      }
+      input {
+        margin-left: 0.75em;
+      }
+      img {
+        margin: 4em;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="title">
+      <h1>Welcome to the Reading the Mind in the EyesTest</h1>
+      <h2>Please indicate the sex of this face:</h2>
+    </div>
+
+    <div class="page" id="page1">
+      <img src="" />
+      <div>
+        <input type="radio" id="male" name="gender" value="M" />
+        <label for="male">Male</label>
+
+        <input type="radio" id="female" name="gender" value="F" />
+        <label for="female">Female</label>
+      </div>
+      <button onclick="NextTrial()">Next <span class="progress"></span></button>
+      <p class="msg">Not sure? You can try to guess!</p>
+    </div>
+
+    <div class="final" id="page4">
+      <h2>All done! Thanks!</h2>
+      <p>Your correctness is <span></span>%</p>
+      <button onclick="NewTrial()">Redo</button>
+    </div>
+
+    <script>
+      var imageArray = ["1.jpg", "2.jpg", "3.jpg"];
+      var ansArray = ["F", "M", "F"];
+
+      // Random the order of the images
+      function Shuffle(imageArray, ansArray) {
+        for (var i = imageArray.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = imageArray[i];
+        imageArray[i] = imageArray[j];
+        imageArray[j] = temp;
+        var temp = ansArray[i];
+        ansArray[i] = ansArray[j];
+        ansArray[j] = temp;
+        }
+      }
+
+      Shuffle(imageArray, ansArray);
+
+      var order = new Array(1, 2, 3, 4);
+      var current = 0; //current trial
+      var correct = 0;
+
+      document.addEventListener("DOMContentLoaded", () => {
+        ShowTrial(current);
+      });
+
+      function NewTrial() {
+        var finalPage = document.querySelector("#page4");
+        finalPage.classList.add("final");
+        finalPage.classList.remove("page");
+        document.querySelector(".page").style.display = "flex";
+        Shuffle(imageArray, ansArray);
+        current = 0;
+        correct = 0;
+        document
+          .querySelector(".page")
+          .setAttribute("id", "page" + order[current]);
+        ShowTrial(current);
+      }
+
+      function ShowTrial(t) {
+        document.querySelector("img").src = imageArray[t];
+        N = t + 1; //counting from 1
+        [...document.querySelectorAll(".progress")].map((x) => {
+          x.textContent = `(${N}/${order.length - 1})`;
+        });
+      }
+
+      function NextTrial() {
+        var currentPage = document.querySelector("#page" + order[current]);
+        var currentInput = document.querySelector(
+          "#page" + order[current] + " input:checked"
+        );
+        if (!currentInput) {
+          document.querySelector(".msg").style.display = "block";
+        } else {
+          document.querySelector(".msg").style.display = "none";
+          var next = current + 1;
+          if (currentInput.value == ansArray[current]) correct++;
+          currentInput.checked = false;
+          if (next < 3) {
+            currentPage.setAttribute("id", "page" + order[next]);
+            ShowTrial(next);
+          } else {
+            var finalPage = document.querySelector("#page4");
+            document.querySelector(".page").style.display = "none";
+            finalPage.classList.remove("final");
+            finalPage.classList.add("page");
+            document.querySelector("h2").style.display = "none";
+            var correctness = (correct / ansArray.length) * 100;
+            finalPage.querySelector("p span").innerHTML =
+              correctness.toFixed(2);
+          }
+          current = next;
+        }
+      }
+    </script>
+  </body>
+</html>

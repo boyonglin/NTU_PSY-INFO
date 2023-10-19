@@ -1,0 +1,9 @@
+<div id="clickme">Click here</div>
+<img id="pic" src="1.jpg">
+<script>
+document.querySelector('#clickme')
+  .addEventListener('click',()=>{
+    let i=Math.floor((Math.random()*3)+1); //1,2,3
+    document.querySelector('#pic').src=i+".jpg";}
+  )
+</script>
