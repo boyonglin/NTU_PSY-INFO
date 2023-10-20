@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <script>
+  var order = new Array(1,2,3);
+  var current = 0; //current trial
+  var correct = 0;
+
+  document.addEventListener("DOMContentLoaded", ()=>{
+      createPageDom()
+      ShowTrial(current);
+  });
+
+  function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      let j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+  }
+
+  shuffle(order)
+  order[3] = 4
+  console.log(order)
+  correct_answer = [1, 0, 1]
+
+  function ShowTrial(t) {
+      document.querySelector('#page'+order[t]).style.display = 'block'
+      N = t+1; //counting from 1
+      [...document.querySelectorAll('.progress')]
+      .map(x=>{x.textContent=`(${N}/${order.length})`});
+
+      if(t == 3)
+      {
+          let newDom = document.createElement("h3")
+          newDom.innerHTML = `Correct rate: ${correct}/3`
+          document.getElementById("page4").appendChild(newDom)
+      }
+
+  }
+
+  function NextTrial() {
+      document.querySelector('#page'+order[current]).style.display = 'none'
+
+      if(document.getElementsByName("f" + String(order[current]))[correct_answer[order[current]-1]].checked)
+      {
+        correct++;
+      }
+
+      current++;
+      ShowTrial(current);
+
+      
+  }
+
+  function createPageDom()
+  {
+    document.write('Please indicate the sex of this face:')
+    for(let i = 1; i < 4; i++)
+    {
+      // let newDiv = document.createElement("div")
+      // newDiv.className = "page"
+      // newDiv.id = "page" + i
+
+      document.write(`<div class="page" id="page${i}">
+        <img src=${i}.jpg><br>
+        <input type=radio name=f${i} value=M> M
+        <input type=radio name=f${i} value=F> F <br>
+        <a href="javascript:NextTrial()">Next</a> 
+        <span class="progress"></span>
+        </div>`)
+    }
+    document.write(`<div class="page" id="page4">
+      <h3>All done! Thanks!</h3>
+      </div>`)
+
+    document.write(`<style> .page {display: none;} </style>`)
+
+  }
+
+
+  </script>
+</html>
+<body>
+
+</body>
+
+
+
+
+

@@ -1,0 +1,65 @@
+<script>
+    var order = [1, 2, 3].sort(() => Math.random() - 0.5); // 隨機排序三個頁面
+    var current = 0;
+    var correctAnswers = {"1": "F", "2": "M", "3": "F"};
+    var correctCount = 0;
+    
+    document.addEventListener("DOMContentLoaded", ()=>{
+        ShowTrial(current);
+    });
+    
+    function ShowTrial(t) {
+        if (t < order.length) {
+            document.querySelector('#page' + order[t]).style.display = 'block';
+            N = t + 1;
+            [...document.querySelectorAll('.progress')]
+                .map(x => { x.textContent = `(${N}/${order.length+1})` });
+        } else {
+            let accuracy = (correctCount / order.length) * 100;
+            document.querySelector('#page4').innerHTML = `<h3>All done! Accuracy: ${accuracy}%</h3>`;
+            document.querySelector('#page4').style.display = 'block';
+            document.querySelector('#intro').style.display = 'none';
+        }
+    }
+    
+    function NextTrial() {
+        let radioChecked = document.querySelector(`#page${order[current]} input[type=radio]:checked`);
+        if (!radioChecked) {
+            alert("Please choose an option!");
+            return;
+        }
+        let selectedValue = radioChecked.value;
+        if (selectedValue == correctAnswers[order[current]]) correctCount++;
+        document.querySelector('#page' + order[current]).style.display = 'none';
+        current++;
+        ShowTrial(current);
+    }
+    </script>
+    
+    <style> 
+    .page {display: none;} 
+    </style>
+    
+    <div id="intro">Please indicate the sex of this face:</div>
+    
+    <!-- 使用for迴圈生成的頁面 -->
+    <div id="pages-container"></div>
+    <div class="page" id="page4"></div>
+    <script>
+        const pagesContainer = document.getElementById('pages-container');
+        for (let i = 1; i <= 3; i++) {
+            const page = `
+                <div class="page" id="page${i}">
+                    <img src=${i}.jpg><br>
+                    <div class="gender-options">
+                        <input type=radio name=f${i} value=M> M
+                        <input type=radio name=f${i} value=F> F <br>
+                    </div>
+                    <a href="javascript:NextTrial()">Next</a> 
+                    <span class="progress"></span>
+                </div>
+            `;
+            pagesContainer.innerHTML += page;
+        }
+    </script>
+    

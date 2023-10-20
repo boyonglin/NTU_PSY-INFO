@@ -1,0 +1,77 @@
+<script>
+var numTrials = 4; // Number of trials
+var current = 0; // Current trial index
+var correctResponses = 0; // Correct responses
+
+var trialData = [
+    { image: "1.jpg", answer: "F" },
+    { image: "2.jpg", answer: "M" },
+    { image: "3.jpg", answer: "F" },
+];
+
+shuffle(trialData);
+document.addEventListener("DOMContentLoaded", () => {
+    ShowTrial(current);
+});
+function shuffle(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+}
+function ShowTrial(t) {
+    
+    document.querySelector('#page' + t).style.display = 'block';
+    N = t + 1;
+    [...document.querySelectorAll('.progress')].map(x => {
+        x.textContent = `(${N}/${numTrials})`;
+    });
+    document.querySelector('#page' + t + ' img').src = trialData[t].image;
+}
+
+function NextTrial() {
+    var userResponse = document.querySelector('input[name="f' + current + '"]:checked').value;
+    var correctAnswer = trialData[current].answer;
+    if (userResponse === correctAnswer) {
+        correctResponses++;
+    }
+
+    document.querySelector('#page' + current).style.display = 'none';
+    current++;
+
+    if (current < numTrials-1) {
+        ShowTrial(current);
+    } else {
+        // Last page, calculate and display accuracy
+        var accuracy = (correctResponses / (numTrials-1)) * 100;
+        document.querySelector('#page' + numTrials).style.display = 'block';
+        document.querySelector('#page' + numTrials + ' h3').textContent = '實驗結束! 正確率：' + accuracy.toFixed(2) + '%';
+    }
+}
+</script>
+<style> .page {display: none;} </style> 
+Please indicate the sex of this face:
+<script>
+    for (var i = 0; i < numTrials; i++) {
+        var page = document.createElement('div');
+        page.className = 'page';
+        page.id = 'page' + i;
+        page.innerHTML = `
+            <img src="">
+            <br>
+            <input type="radio" name="f${i}" value="M"> M
+            <input type="radio" name="f${i}" value="F"> F
+            <br>
+            <a href="javascript:NextTrial()">Next</a>
+            <span class="progress"></span>
+        `;
+        document.body.appendChild(page);
+    }
+    </script>
+<div class="page" id="page4">
+    <h3 id="myHeader" ></h3>
+</div>
+    
+    
