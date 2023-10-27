@@ -1,63 +1,108 @@
 var currentTrial = 1;
 var startTrialTime = 0;
 var trialRunning = false;
+var answer = ["diff", "diff", "same"];
+var accuracy = 0;
 
-$(document).ready(function() {
-	$('#submitButton').hide();
-	$(document).keyup(function (e){
-                if( e.which === 32 ) { StartTrial(); } //space
-                if( e.which === 83 ) { PressedSame(); } //s
-                if( e.which === 68 ) { PressedDifferent(); } //d
-        });
+$(document).ready(function () {
+  $("#submitButton").hide();
+  $("#accuracy").hide();
+  $(document).keyup(function (e) {
+    if (e.which === 32) { //space
+      StartTrial();
+    }
+    if (e.which === 83) { //s
+      PressedSame();
+    }
+    if (e.which === 68) { //d
+      PressedDifferent();
+    }
+  });
 });
 
 function PressedSame() {
-	if (!trialRunning) {
-		return;
-	}
-	$('#t' + currentTrial + '_response').val("same");
-	NextTrial();
+  if (!trialRunning) {
+    return;
+  }
+  $("#response").val("same");
+  NextTrial();
 }
 
 function PressedDifferent() {
-	if (!trialRunning) {
-		return;
-	}
-	$('#t' + currentTrial + '_response').val("diff");
-	NextTrial();
+  if (!trialRunning) {
+    return;
+  }
+  $("#response").val("diff");
+  NextTrial();
 }
 
 function NextTrial() {
-	trialRunning = false;
+  trialRunning = false;
 
-	var currentTime = new Date().getTime();
-	var RT = currentTime - startTrialTime;
-	$('#t' + currentTrial + '_rt').val(RT);
+  var currentTime = new Date().getTime();
+  var RT = currentTime - startTrialTime;
+  var response = $("#response").val();
 
-	$('#t' + currentTrial + '_d2').hide();
-	$('#startTrial').show();
-	currentTrial++;
+  // collect data
+  var data = {
+    currentTrial: currentTrial,
+    answer: answer[currentTrial - 1],
+    response: response,
+    RT: RT,
+  };
 
-        if(currentTrial==4){
-		$('#submitButton').show();
-        }
+  // send data to server
+  fetch("/storeData", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((response) => response.text())
+    .then((data) => console.log(data))
+    .catch((error) => console.error(error));
+
+  // update accuracy
+  if (response === answer[currentTrial - 1]) {
+    accuracy++;
+  }
+
+  $("#canvas").hide();
+  $("#startTrial").show();
+  currentTrial++;
+
+  if (currentTrial < 4) {
+    $("#startTrial").text("START TRIAL " + currentTrial);
+  } else {
+    $("#startTrial").hide();
+    $("#submitButton").show();
+  }
 }
 
 function StartTrial() {
-	if (trialRunning) {
-		return;
-	}
-	trialRunning = true;
+  if (trialRunning) {
+    return;
+  }
+  trialRunning = true;
 
-	$('#startTrial').hide();
-	$('#t' + currentTrial + '_d1').show();
+  $("#startTrial").hide();
+  $("#canvas").show();
+  $("#canvas").attr("src", "static/images/" + currentTrial + "_display1.png");
 
-	setTimeout(function() {
-		$('#t' + currentTrial + '_d1').hide();
-	}, 1000);
+  setTimeout(function () {
+    $("#canvas").hide();
+  }, 1000);
 
-	setTimeout(function() {
-		$('#t' + currentTrial + '_d2').show();
-		startTrialTime = new Date().getTime();
-	}, 1500);
+  setTimeout(function () {
+    $("#canvas").show();
+    $("#canvas").attr("src", "static/images/" + currentTrial + "_display2.png");
+    startTrialTime = new Date().getTime();
+  }, 1500);
+}
+
+function submit() {
+  $("#submitButton").hide();
+  $("#accuracy").show();
+  $("#accuracy").text("Accuracy: " + accuracy + "/3");
 }
