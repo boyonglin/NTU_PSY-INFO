@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Remember the colors</title>
+    <link rel="stylesheet" href="./static/styles.css" />
+  </head>
+  <body>
+    <img src="./static/images/logo.jpg" alt="logo.jpg" class="logo" />
+
+    <div>
+      <p>
+        You'll see several colored squares flashed briefly.
+        <strong>Remember their colors.</strong>
+      </p>
+      <p>After a delay, you'll see a new set of colored squares.</p>
+      <pre class="snippet">
+Press 's' if the two displays are the same
+Press 'd' if a color changed (different)
+Press 'spacebar' to start each trial
+      </pre>
+    </div>
+
+    <div id="container">
+      <a href="javascript:StartTrial()" id="startTrial">Start Trial</a>
+      <img class="displays" id="t1_d1" src="./static/images/1_display1.png" />
+      <img class="displays" id="t1_d2" src="./static/images/1_display2.png" />
+
+      <img class="displays" id="t2_d1" src="./static/images/2_display1.png" />
+      <img class="displays" id="t2_d2" src="./static/images/2_display2.png" />
+
+      <img class="displays" id="t3_d1" src="./static/images/3_display1.png" />
+      <img class="displays" id="t3_d2" src="./static/images/3_display2.png" />
+    </div>
+
+    <input type="hidden" id="t1_response" name="t1_response" value="" />
+    <input type="hidden" id="t1_rt" name="t1_rt" value="" />
+
+    <input type="hidden" id="t2_response" name="t2_response" value="" />
+    <input type="hidden" id="t2_rt" name="t2_rt" value="" />
+
+    <input type="hidden" id="t3_response" name="t3_response" value="" />
+    <input type="hidden" id="t3_rt" name="t3_rt" value="" />
+
+    <input type="submit" id="submitButton" name="submitButton" class="button" />
+
+    <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="./static/main.js"></script>
+  </body>
+</html>

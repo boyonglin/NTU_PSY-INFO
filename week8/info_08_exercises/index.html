@@ -36,8 +36,8 @@ function NextTrial() {
 	var currentTime = new Date().getTime();
 	var RT = currentTime - startTrialTime;
 	$('#t' + currentTrial + '_rt').val(RT);
-	
-	$('#t' + currentTrial + '_d2').hide();	
+
+	$('#t' + currentTrial + '_d2').hide();
 	$('#startTrial').show();
 	currentTrial++;
 
@@ -51,18 +51,18 @@ function StartTrial() {
 		return;
 	}
 	trialRunning = true;
-	
+
 	$('#startTrial').hide();
 	$('#t' + currentTrial + '_d1').show();
-	
+
 	setTimeout(function() {
 		$('#t' + currentTrial + '_d1').hide();
 	}, 1000);
-	
+
 	setTimeout(function() {
 		$('#t' + currentTrial + '_d2').show();
 		startTrialTime = new Date().getTime();
-	}, 1500);	
+	}, 1500);
 }
 </script>
 
@@ -100,14 +100,14 @@ You'll see several colored squares flashed briefly. Remember their colors. After
 
 <div id="container">
  <a href="javascript:StartTrial()" id="startTrial">Start Trial</a>
- <img class="displays" id="t1_d1" src="1_display1.png">
- <img class="displays" id="t1_d2" src="1_display2.png">
-	
- <img class="displays" id="t2_d1" src="2_display1.png">
- <img class="displays" id="t2_d2" src="2_display2.png">
- 
- <img class="displays" id="t3_d1" src="3_display1.png">
- <img class="displays" id="t3_d2" src="3_display2.png"> 
+ <img class="displays" id="t1_d1" src="./static/images/1_display1.png" />
+ <img class="displays" id="t1_d2" src="./static/images/1_display2.png" />
+
+ <img class="displays" id="t2_d1" src="./static/images/2_display1.png" />
+ <img class="displays" id="t2_d2" src="./static/images/2_display2.png" />
+
+ <img class="displays" id="t3_d1" src="./static/images/3_display1.png" />
+ <img class="displays" id="t3_d2" src="./static/images/3_display2.png" />
 </div>
 
 <input type="hidden" id="t1_response" name="t1_response" value="">
