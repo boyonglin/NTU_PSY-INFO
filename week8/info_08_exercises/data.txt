@@ -1,0 +1,3 @@
+{"currentTrial":1,"answer":"diff","response":"same","RT":1349}
+{"currentTrial":2,"answer":"diff","response":"diff","RT":1361}
+{"currentTrial":3,"answer":"same","response":"diff","RT":638}
