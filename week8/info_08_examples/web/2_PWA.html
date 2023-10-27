@@ -1,0 +1,18 @@
+<head>
+ <link rel="manifest" href="2_manifest.json">
+ <meta name="viewport" content="width=device-width, initial-scale=1" >
+ <meta name="theme-color" content="#000">
+ <link rel="apple-touch-icon" href="icons/apple-icon-180.png">
+ <meta name="apple-mobile-web-app-capable" content="yes">
+</head>
+
+<body>
+Hello World!
+
+<script>
+if('serviceWorker' in navigator){
+	navigator.serviceWorker.register('2_service-worker.js');
+}
+
+</script>
+</body>

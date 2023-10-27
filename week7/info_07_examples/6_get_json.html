@@ -1,0 +1,7 @@
+<script>
+fetch('http://localhost:8000/Hi/Marry')
+.then(r => r.json()) //Simplified arrow function
+.then((r) => { //Arrow function
+	alert(`${r.greet} ${r.name}`);
+}).catch(err => console.log(err)) //Simplified arrow function
+</script>
